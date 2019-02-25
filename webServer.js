@@ -18,7 +18,6 @@ var server = app.listen(portno, function () {
   console.log('Listening at http://' + serverIP + ':' + port + ' exporting the directory ' + __dirname);
 });
 
-
 /*
  * landing page
  */
@@ -26,16 +25,12 @@ app.get('/', function (request, response) {
 	response.send('Home page of the web server of files from ' + __dirname);
 });
 
-
 /*
  * parameters: dof int, m [double]*dof, k [double]*dof
  */
 app.get('/modal_analysis', function (request, response) {
-	var dof = request.query.dof;
-	console.log(request.query.dof)
-	// console.log(request.query.m)
-	// console.log(request.query.k)
 	try {
+		var dof = request.query.dof;
 		var m = JSON.parse(request.query.m);	
 		var k = JSON.parse(request.query.k);
 	}
@@ -52,6 +47,7 @@ app.get('/modal_analysis', function (request, response) {
 		return;
 	};
 
+	// check m,k values
 	for (var i in m) {
 		console.log(m[i]);
 		if (isNaN(m[i])) {
@@ -60,7 +56,6 @@ app.get('/modal_analysis', function (request, response) {
 			return;
 		};
 	};
-
 	for (var i in k) {
 		console.log(k[i]);
 		if (isNaN(k[i])) {
@@ -70,6 +65,7 @@ app.get('/modal_analysis', function (request, response) {
 		};
 	};
 
+	// Pass queries to Python shell
 	var options = {
 		mode: 'json',
 		pythonPath: 'python',
@@ -77,12 +73,12 @@ app.get('/modal_analysis', function (request, response) {
 		scriptPath: './compute',
 		args: [dof,m,k]
 	};
-
 	PythonShell.run('modal_analysis.py', options, function (err, results) {
 		if (err) {
 			response.status(400).send(JSON.stringify(err));
 		} else {
 			console.log(results);
+			console.log(results[0]['mode'])
 			response.status(200).send(results);
 		}
 	});

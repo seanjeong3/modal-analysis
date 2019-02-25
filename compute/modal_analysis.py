@@ -35,11 +35,11 @@ def compute_eigen(M,K):
 		absMaxIdx = max(range(dof), key=lambda x: abs(v[x,i]))
 		absMaxVal = v[absMaxIdx,i]
 		v[:,i] = v[:,i] / absMaxVal
+	v = np.transpose(v)
 	return w,v
 
 if __name__ == "__main__":
-	# dof,m,k = read_arg()
-	dof,m,k = 2,[2,1],[2,1]
+	dof,m,k = read_arg()
 	M,K = configure_matrix(m,k)
 	w,v = compute_eigen(M,K)
 	# return result in json via stdout
