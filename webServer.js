@@ -77,8 +77,8 @@ app.get('/modal_analysis', function (request, response) {
 		if (err) {
 			response.status(400).send(JSON.stringify(err));
 		} else {
-			console.log(results);
-			console.log(results[0]['mode'])
+			// console.log(results);
+			// console.log(results[0]['mode'])
 			response.status(200).send(results);
 		}
 	});
