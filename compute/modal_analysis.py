@@ -21,9 +21,8 @@ def configure_matrix(m,k):
 		K[i+1,i] -= k[i+1]
 	return M,K
 
+# get eigenvalue w and eigenvector v
 def compute_eigen(M,K):
-	# get eigenvalue w and eigenvector v
-	# w,v = np.linalg.eig(np.matmul(K, np.linalg.inv(M)))
 	w,v = linalg.eig(K,M)
 	idx = w.argsort() 
 	w = np.real(w[idx])
