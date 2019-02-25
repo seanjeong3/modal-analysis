@@ -3,7 +3,7 @@
 var ModalAnalysisApp = angular.module('ModalAnalysisApp', ['ngRoute','ngMaterial', 'ngResource']);
 
 ModalAnalysisApp.controller('MainController', ['$scope', '$rootScope', '$location', '$resource', '$http',
-    function($scope, $rootScope, $location, $resource, $http) {
+	function($scope, $rootScope, $location, $resource, $http) {
 
 	$scope.dof = '2';
 	$scope.m = '[1,1]';
@@ -18,11 +18,11 @@ ModalAnalysisApp.controller('MainController', ['$scope', '$rootScope', '$locatio
 		$scope.modalProperty = '';
 		
 		$scope.FetchModel(url, function(model) {
-            console.log(model);
-            $scope.$apply(function() {
-                $scope.modalProperty = model;
-            });
-        });
+			console.log(model);
+			$scope.$apply(function() {
+				$scope.modalProperty = model;
+			});
+		});
 
 	};
 
