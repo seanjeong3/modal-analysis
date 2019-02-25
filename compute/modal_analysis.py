@@ -1,6 +1,7 @@
 import sys
 import json
 import numpy as np
+from scipy import linalg
 
 # read arguments
 def read_arg():
@@ -22,22 +23,24 @@ def configure_matrix(m,k):
 
 def compute_eigen(M,K):
 	# get eigenvalue w and eigenvector v
-	w,v = np.linalg.eig(np.matmul(K, np.linalg.inv(M)))
+	# w,v = np.linalg.eig(np.matmul(K, np.linalg.inv(M)))
+	w,v = linalg.eig(K,M)
 	idx = w.argsort() 
-	w = w[idx]
+	w = np.real(w[idx])
 	v = v[:,idx]
 	# sqrt eigenvalues to get natural frequency wn
 	w = np.sqrt(w)
 	# Normalize eigenvector
 	for i in range(dof):
 		absMaxIdx = max(range(dof), key=lambda x: abs(v[x,i]))
-		v[:,i] = v[:,i] / v[absMaxIdx,i]
+		absMaxVal = v[absMaxIdx,i]
+		v[:,i] = v[:,i] / absMaxVal
 	return w,v
 
 if __name__ == "__main__":
-	dof,m,k = read_arg()
+	# dof,m,k = read_arg()
+	dof,m,k = 2,[2,1],[2,1]
 	M,K = configure_matrix(m,k)
 	w,v = compute_eigen(M,K)
 	# return result in json via stdout
 	print(json.dumps({"freq": w.tolist(), "mode": v.tolist()}))
-	
